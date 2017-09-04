@@ -5,12 +5,14 @@ import os
 import re
 import sys
 import random
+# 更改xcode文件引用
+from mod_pbxproj import XcodeProject
+
 
 def addContent():
     '''添加垃圾文件'''
 
-    # 更改xcode文件引用
-    from pbxproj import XcodeProject
+
 
     # 定义类名list
     classList = []
@@ -32,6 +34,7 @@ def addContent():
 
     # 获取需要打开的工程
     projectPath = path + '.xcodeproj/project.pbxproj'
+    print projectPath.encode()
     # #定义类中的属性
     propertyName = ''
     for i in range(10):
@@ -39,8 +42,7 @@ def addContent():
         propertyName = propertyName + classChr
 
     # 打开工程
-    project = XcodeProject.load(projectPath)
-
+    project = XcodeProject.Load(projectPath)
     print '内容修改中....'
 
     # 循环生成文件夹
