@@ -34,7 +34,6 @@ def addContent():
 
     # 获取需要打开的工程
     projectPath = path + '.xcodeproj/project.pbxproj'
-    print projectPath.encode()
     # #定义类中的属性
     propertyName = ''
     for i in range(10):
