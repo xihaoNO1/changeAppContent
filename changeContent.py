@@ -7,7 +7,7 @@ import sys
 import random
 # 更改xcode文件引用
 from mod_pbxproj import XcodeProject
-
+from PIL import  Image
 
 def addContent():
     '''添加垃圾文件'''
@@ -59,7 +59,7 @@ def addFiles(dirPath):
 
         with open(dirPath + '/' + filePath + '/' + filePath + '.m', 'w') as f2:
             addContent = ''
-            for i in range(100):
+            for i in range(10):
                 num = random.randint(0, 10)
                 addContent = addContent + str(num)
 
@@ -117,9 +117,14 @@ def changeFile(filepath):
                             f4.writelines(content2)
 
             elif typeStr == 'png':
-                pass
-
-
+                img = Image.open(pathStr).convert('RGBA')
+                size = img.size
+                pix = img.load()
+                for x in range(0,size[0]):
+                    for y in range(0,size[1]):
+                        r = random.randint(0,1)
+                        pix[x,y] = (pix[x,y][0]-r,pix[x, y][1], pix[x, y][2],pix[x, y][3])
+                img.save(pathStr, 'PNG')
 
 def deleteContent():
     '''删除添加的垃圾文件'''
@@ -135,7 +140,6 @@ def deleteContent():
     for x in pathList:
         floderPath = sys.path[0]+'/'+x
         os.system('rm -rf %s' % floderPath)
-
     print '***************   数据还原完成  ******************'
 
 
@@ -147,7 +151,7 @@ if __name__ == '__main__':
     propertyName = ''
 
     # 定义需要添加的类的数量
-    classNum = 500
+    classNum = 100
     # 定义类名中字母的长度
     classNameLen = 20
 
@@ -158,13 +162,3 @@ if __name__ == '__main__':
     elif type == 'd':
         '''删除垃圾文件'''
         deleteContent()
-
-
-
-
-
-
-
-
-
-
