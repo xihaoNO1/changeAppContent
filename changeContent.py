@@ -79,7 +79,7 @@ def changeFile(filepath):
     for fi in files:
         fi_d = os.path.join(filepath, fi)
         global propertyName
-        num = random.randint(0, 10)
+        num = random.randint(0, 100)
         propertyName = fi.split('.')[0] + '_property%s' % num
         if '+' in propertyName:
             propertyName.replace('+','_')
