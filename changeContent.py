@@ -59,18 +59,18 @@ def addFiles(dirPath):
 
         with open(dirPath + '/' + filePath + '/' + filePath + '.m', 'w') as f2:
             addContent = ''
-            for i in range(10):
-                num = random.randint(0, 10)
+            for i in range(0):
+                num = random.randint(0, 100)
                 addContent = addContent + str(num)
 
             f2.write(
                 '\n\n#import "%s.h"\n@implementation %s\n- (instancetype)init{\nself = [super init];\n if (self) {\n   }\nreturn self;\n}'
-                '\n- (NSString *)%s{\nreturn @"%s";\n}\n@end\n' %
+                '\n- (NSString *)%s{\n  return @"%s";\n}\n@end\n' %
                 (filePath, filePath, propertyName, addContent))
         project.add_folder(dirPath + '/' + filePath)
 
     project.save()
-    print '***************   修改工程完成,可以打包了  ******************'
+    print '***************   修改项目完成,可以打包了  ******************'
 
 def changeFile(filepath):
     '''修改文件'''
@@ -78,6 +78,12 @@ def changeFile(filepath):
     files = os.listdir(filepath)
     for fi in files:
         fi_d = os.path.join(filepath, fi)
+        global propertyName
+        num = random.randint(0, 10)
+        propertyName = fi.split('.')[0] + '_property%s' % num
+        if '+' in propertyName:
+            propertyName.replace('+','_')
+
         if os.path.isdir(fi_d):
             changeFile(fi_d)
         else:
@@ -94,7 +100,6 @@ def changeFile(filepath):
                                 index1 = max(index1,i)
 
                         content1.insert(index1, "@property(nonatomic,copy)NSString *%s;\n" % propertyName)
-                        content1.insert(0, "#import <Foundation/Foundation.h>\n")
                         with open(pathStr, 'w') as f2:
                             f2.writelines(content1)
 
@@ -104,15 +109,15 @@ def changeFile(filepath):
                     index2 = 0
                     if '@end\n' in content2:
                         addContent = ''
-                        for i in range(100):
+                        for i in range(2):
                             num = random.randint(0, 10)
                             addContent = addContent + "%s"%num
 
                         for i,str in enumerate(content2):
                             if str == '@end\n' or str == '@end':
                                 index2 = max(index2,i)
-                        content2.insert(index2, "\n- (NSString *)%s{\nreturn @\"%s\";\n}\n" % (propertyName, addContent))
-                        content2.insert(0, "#import <Foundation/Foundation.h>\n")
+                        content2.insert(index2, "\n- (NSString *)%s{\n  return @\" \";\n}\n" % propertyName)
+                        # content2.insert(0, "#import <Foundation/Foundation.h>\n")
                         with open(pathStr, 'w') as f4:
                             f4.writelines(content2)
 
@@ -140,20 +145,20 @@ def deleteContent():
     for x in pathList:
         floderPath = sys.path[0]+'/'+x
         os.system('rm -rf %s' % floderPath)
-    print '***************   数据还原完成  ******************'
+    print '***************   还原项目完成  ******************'
 
 
 if __name__ == '__main__':
     type = raw_input('请输入需要进行的操作'
-                     ' (a 添加内容;'
-                     'd 删除内容) : ')
+                     ' (a 修改工程;'
+                     'd 还原工程) : ')
 
     propertyName = ''
 
     # 定义需要添加的类的数量
-    classNum = 100
+    classNum = 0
     # 定义类名中字母的长度
-    classNameLen = 20
+    classNameLen = 0
 
     if type == 'a':
         '''添加垃圾文件'''
