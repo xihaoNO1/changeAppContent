@@ -78,15 +78,15 @@ def changeFile(filepath):
     files = os.listdir(filepath)
     for fi in files:
         fi_d = os.path.join(filepath, fi)
-        global propertyName
-        num = random.randint(0, 100)
-        propertyName = fi.split('.')[0] + '_property%s' % num
-        if '+' in propertyName:
-            propertyName.replace('+','_')
-
         if os.path.isdir(fi_d):
             changeFile(fi_d)
         else:
+
+            num = random.randint(0, 100)
+            propertyName = fi.split('.')[0] + '_property%s' % num
+
+            strinfo = re.compile('\+')
+            propertyName = strinfo.sub('_', propertyName)
 
             pathStr = os.path.join(filepath, fi_d)
             typeStr = pathStr.split('.')[-1]
@@ -131,6 +131,21 @@ def changeFile(filepath):
                         pix[x,y] = (pix[x,y][0]-r,pix[x, y][1], pix[x, y][2],pix[x, y][3])
                 img.save(pathStr, 'PNG')
 
+                '''如果是1024上架图标,重新处理,去掉透明通道'''
+                if size == (1024,1024):
+                    img = Image.open(pathStr).convert('RGB')
+                    size = img.size
+                    pix = img.load()
+                    for x in range(0, size[0]):
+                        for y in range(0, size[1]):
+                            r = random.randint(0, 1)
+                            pix[x, y] = (pix[x, y][0] - r, pix[x, y][1], pix[x, y][2])
+                    img.save(pathStr, 'PNG')
+
+
+
+
+
 def deleteContent():
     '''删除添加的垃圾文件'''
     # 先进行强制还原
@@ -152,8 +167,6 @@ if __name__ == '__main__':
     type = raw_input('请输入需要进行的操作'
                      ' (a 修改工程;'
                      'd 还原工程) : ')
-
-    propertyName = ''
 
     # 定义需要添加的类的数量
     classNum = 0
