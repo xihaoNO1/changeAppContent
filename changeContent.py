@@ -61,15 +61,18 @@ def changeFile(filepath):
             elif typeStr == 'png':
                 img = Image.open(pathStr).convert('RGBA')
                 size = img.size
-                pix = img.load()
-                for x in range(0,size[0]):
-                    for y in range(0,size[1]):
-                        r = random.randint(0,1)
-                        pix[x,y] = (pix[x,y][0]-r,pix[x, y][1], pix[x, y][2],pix[x, y][3])
-                img.save(pathStr, 'PNG')
 
-#                '''如果是1024上架图标,重新处理,去掉透明通道'''
-#                if size == (1024,1024):
+                '''如果是1024上架图标,重新处理,去掉透明通道'''
+                if size == (1024,1024):
+                    pass
+                else:
+                    pix = img.load()
+                    for x in range(0, size[0]):
+                        for y in range(0, size[1]):
+                            r = random.randint(0, 1)
+                            pix[x, y] = (pix[x, y][0] - r, pix[x, y][1], pix[x, y][2], pix[x, y][3])
+                    img.save(pathStr, 'PNG')
+
 #                    img = Image.open(pathStr).convert('RGB')
 #                    size = img.size
 #                    pix = img.load()
