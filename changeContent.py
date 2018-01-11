@@ -64,7 +64,8 @@ def changeFile(filepath):
 
                 '''如果是1024上架图标,重新处理,去掉透明通道'''
                 if size == (1024,1024):
-                    pass
+                    img = Image.open(pathStr).convert('RGB')
+                    img.save(pathStr, 'PNG')
                 else:
                     pix = img.load()
                     for x in range(0, size[0]):
